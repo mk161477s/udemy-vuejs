@@ -264,3 +264,49 @@ Vue.directive("border", function(el, binding) {}
 mixinの内容はcomponentによって上書きされる
 ただしライフサイクルフックに関しては、mixinが先に実行され、その後にcomponent側が実行される（マージ）
 グローバルミックスインはすべてのコンポーネントに適用されてしまうので要注意
+
+---
+トランジション・アニメーション
+
+transitionコンポーネント
+①消えたり現れたりする
+②複数の要素の中で一つの要素が選ばれて適用される
+→必ずkey属性を付与する
+
+transitionタグは単一のコンポーネントしか扱えない
+
+v-showは2つ使用できない
+v-if、elseだと可能
+
+<transition
+      @before-enter="beforeEnter"
+      @enter="Enter"
+      @after-enter="afterEnter"
+      @enter-cancelled="enterCancelled"
+      @before-leave="beforeLeave"
+      @leave="leave"
+      @after-leave="afterLeave"
+      @leave-cancelled="leaveCancelled"
+    >
+
+methods: {
+    beforeEnter() {},
+    enter() {},
+    afterEnter() {},
+    enterCancelled() {},
+    beforeLeave() {},
+    leave() {},
+    afterLeave() {},
+    leaveCancelled() {},
+  }
+
+8つのJSフックと引数について
+done→cssとJSのアニメーションどちらも見たい、というときはつけなくてOK
+JSが終わったときにCSSのアニメーションを終えたいときはつける
+
+leaveCancelled→v-showと併用するときだけ有効
+
+css属性にfalseを渡し、安全にJSのアニメーションを行う
+:css="false"
+↑v-bindをつける
+
